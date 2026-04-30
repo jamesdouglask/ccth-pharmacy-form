@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacy Staff Questionnaire — CCTH</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:    #1B4F8A;
+    --blue-lt: #E8F0FA;
+    --blue-md: #2C5FA8;
+    --teal:    #0D7A5F;
+    --teal-lt: #E4F4EF;
+    --amber:   #B45309;
+    --amber-lt:#FEF3C7;
+    --red:     #991B1B;
+    --red-lt:  #FEE2E2;
+    --gray-50: #F9FAFB;
+    --gray-100:#F3F4F6;
+    --gray-200:#E5E7EB;
+    --gray-400:#9CA3AF;
+    --gray-600:#4B5563;
+    --gray-800:#1F2937;
+    --white:   #FFFFFF;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'DM Sans', system-ui, sans-serif;
+    --radius:  10px;
+    --shadow:  0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--blue);
+    color: white;
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+  }
+  .site-header .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+    color: rgba(255,255,255,0.9);
+  }
+  .site-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    color: white;
+  }
+  .site-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0.75rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+  .progress-bar {
+    height: 5px;
+    background: var(--gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--blue-md);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  /* ── SECTION ── */
+  .section { display: none; flex-direction: column; gap: 1.25rem; animation: fadeIn 0.25s ease; }
+  .section.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .section-header {
+    background: var(--blue-lt);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 1rem 1.25rem;
+  }
+  .section-header h2 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--blue);
+    margin-bottom: 3px;
+  }
+  .section-header p {
+    font-size: 12px;
+    color: var(--gray-600);
+    line-height: 1.5;
+  }
+  .section-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  /* ── INSTRUCTION BOX ── */
+  .instr {
+    background: var(--amber-lt);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--amber);
+    line-height: 1.6;
+  }
+
+  /* ── QUESTION BLOCK ── */
+  .q-block { display: flex; flex-direction: column; gap: 8px; }
+  .q-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--gray-800);
+    line-height: 1.5;
+  }
+  .q-label .req { color: var(--red); margin-left: 2px; }
+  .q-sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray-600);
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* ── RADIO / CHECKBOX OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 5px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .opt:hover { background: var(--gray-50); border-color: var(--gray-400); }
+  .opt input[type=radio], .opt input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--blue-md);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .opt.selected-radio {
+    background: var(--blue-lt);
+    border-color: var(--blue-md);
+  }
+  .opt.selected-radio .opt-text { color: var(--blue); font-weight: 500; }
+  .opt.selected-check {
+    background: var(--teal-lt);
+    border-color: var(--teal);
+  }
+  .opt.selected-check .opt-text { color: var(--teal); font-weight: 500; }
+  .opt-text { font-size: 13px; color: var(--gray-800); line-height: 1.4; }
+
+  /* ── LIKERT TABLE ── */
+  .likert-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .likert-header {
+    display: grid;
+    grid-template-columns: 1fr repeat(5, 48px);
+    gap: 4px;
+    padding: 0 4px;
+  }
+  .likert-header .lh-label {
+    font-size: 10px;
+    color: var(--gray-400);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .likert-row {
+    display: grid;
+    grid-template-columns: 1fr repeat(5, 48px);
+    gap: 4px;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 8px 4px 8px 12px;
+    transition: background 0.1s;
+  }
+  .likert-row:hover { background: var(--gray-50); }
+  .likert-row .lr-text { font-size: 12.5px; color: var(--gray-800); line-height: 1.4; padding-right: 8px; }
+  .likert-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.12s;
+    color: var(--gray-600);
+    background: var(--white);
+    user-select: none;
+  }
+  .likert-btn:hover { background: var(--gray-100); border-color: var(--gray-400); }
+  .likert-btn.sel-1, .likert-btn.sel-2 { background: var(--red-lt); border-color: #FCA5A5; color: var(--red); }
+  .likert-btn.sel-3 { background: var(--amber-lt); border-color: #FCD34D; color: var(--amber); }
+  .likert-btn.sel-4, .likert-btn.sel-5 { background: var(--teal-lt); border-color: #6EE7B7; color: var(--teal); }
+
+  /* ── TEXTAREA / INPUT ── */
+  textarea, .text-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-family: var(--font-body);
+    color: var(--gray-800);
+    background: var(--white);
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s;
+    line-height: 1.6;
+  }
+  .text-input { min-height: unset; height: 40px; resize: none; }
+  textarea:focus, .text-input:focus { outline: none; border-color: var(--blue-md); box-shadow: 0 0 0 3px rgba(44,95,168,0.1); }
+
+  /* ── NAVIGATION ── */
+  .nav-bar {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+  .nav-info { font-size: 12px; color: var(--gray-600); }
+  .nav-info strong { color: var(--gray-800); }
+  .btn-row { display: flex; gap: 8px; }
+  .btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--gray-200);
+    background: var(--white);
+    color: var(--gray-800);
+    font-family: var(--font-body);
+    transition: all 0.12s;
+  }
+  .btn:hover { background: var(--gray-100); }
+  .btn-primary {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+  }
+  .btn-primary:hover { background: var(--blue-md); border-color: var(--blue-md); }
+
+  /* ── COMPLETION ── */
+  .completion {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    padding: 2rem 1rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .completion.active { display: flex; }
+  .check-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--teal-lt);
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--teal);
+  }
+  .completion h2 { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--blue); }
+  .completion p { font-size: 13.5px; color: var(--gray-600); max-width: 420px; line-height: 1.7; }
+  .score-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 420px; }
+  .score-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .score-card .val { font-family: var(--font-display); font-size: 26px; color: var(--blue); }
+  .score-card .lbl { font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4; }
+  .print-btn {
+    padding: 10px 24px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+  .print-btn:hover { background: var(--blue-md); }
+
+  /* ── PRINT ── */
+  @media print {
+    .progress-wrap, .nav-bar { display: none !important; }
+    .section { display: flex !important; }
+    .site-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: white; }
+    .main { padding: 0; max-width: 100%; }
+    .section-card { box-shadow: none; border: 1px solid #ccc; margin-bottom: 1rem; page-break-inside: avoid; }
+  }
+
+  @media (max-width: 540px) {
+    .likert-header, .likert-row { grid-template-columns: 1fr repeat(5, 36px); }
+    .likert-btn { height: 30px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="badge">CCTH Pharmacy Research — Confidential</div>
+  <h1>Pharmacy Staff Questionnaire</h1>
+  <p>Assessment of Pharmaceutical Inventory Management Practices and Medicine Availability &mdash; Cape Coast Teaching Hospital</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="section-label">Section 1 of 5 &mdash; Demographic Information</span>
+    <span id="pct-label">20%</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:20%"></div></div>
+</div>
+
+<div class="main">
+
+  <!-- ── SECTION A ── -->
+  <div class="section active" id="sec-a">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Section A &mdash; Demographic and professional information</h2>
+        <p>Your responses are anonymous. Do not write your name anywhere on this form. Estimated time: 20&ndash;25 minutes.</p>
+      </div>
+      <div class="section-body">
+
+        <div class="q-block">
+          <div class="q-label">A1. What is your professional cadre? <span class="req">*</span></div>
+          <div class="options" data-q="A1" data-type="radio">
+            <label class="opt"><input type="radio" name="A1" value="Pharmacist"><span class="opt-text">Pharmacist</span></label>
+            <label class="opt"><input type="radio" name="A1" value="Pharmacy Technician"><span class="opt-text">Pharmacy Technician</span></label>
+            <label class="opt"><input type="radio" name="A1" value="Dispensary Technician"><span class="opt-text">Dispensary Technician</span></label>
+            <label class="opt"><input type="radio" name="A1" value="Store Manager"><span class="opt-text">Store Manager</span></label>
+            <label class="opt"><input type="radio" name="A1" value="Other"><span class="opt-text">Other</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A2. Highest professional qualification <span class="req">*</span></div>
+          <div class="options" data-q="A2" data-type="radio">
+            <label class="opt"><input type="radio" name="A2" value="Certificate"><span class="opt-text">Certificate</span></label>
+            <label class="opt"><input type="radio" name="A2" value="Diploma"><span class="opt-text">Diploma</span></label>
+            <label class="opt"><input type="radio" name="A2" value="Bachelor's Degree"><span class="opt-text">Bachelor&rsquo;s Degree</span></label>
+            <label class="opt"><input type="radio" name="A2" value="Master's Degree"><span class="opt-text">Master&rsquo;s Degree</span></label>
+            <label class="opt"><input type="radio" name="A2" value="Other"><span class="opt-text">Other</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A3. Total years in pharmacy practice (including before CCTH) <span class="req">*</span></div>
+          <div class="options" data-q="A3" data-type="radio">
+            <label class="opt"><input type="radio" name="A3" value="<1"><span class="opt-text">Less than 1 year</span></label>
+            <label class="opt"><input type="radio" name="A3" value="1-3"><span class="opt-text">1&ndash;3 years</span></label>
+            <label class="opt"><input type="radio" name="A3" value="4-6"><span class="opt-text">4&ndash;6 years</span></label>
+            <label class="opt"><input type="radio" name="A3" value="7-10"><span class="opt-text">7&ndash;10 years</span></label>
+            <label class="opt"><input type="radio" name="A3" value=">10"><span class="opt-text">More than 10 years</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A4. Years worked specifically at CCTH <span class="req">*</span></div>
+          <div class="options" data-q="A4" data-type="radio">
+            <label class="opt"><input type="radio" name="A4" value="<1"><span class="opt-text">Less than 1 year</span></label>
+            <label class="opt"><input type="radio" name="A4" value="1-3"><span class="opt-text">1&ndash;3 years</span></label>
+            <label class="opt"><input type="radio" name="A4" value="4-6"><span class="opt-text">4&ndash;6 years</span></label>
+            <label class="opt"><input type="radio" name="A4" value="7-10"><span class="opt-text">7&ndash;10 years</span></label>
+            <label class="opt"><input type="radio" name="A4" value=">10"><span class="opt-text">More than 10 years</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A5. Current unit/department <span class="req">*</span></div>
+          <div class="options" data-q="A5" data-type="radio">
+            <label class="opt"><input type="radio" name="A5" value="Main Store"><span class="opt-text">Main Pharmacy Store</span></label>
+            <label class="opt"><input type="radio" name="A5" value="Outpatient Dispensary"><span class="opt-text">Outpatient Dispensary</span></label>
+            <label class="opt"><input type="radio" name="A5" value="Inpatient Dispensary"><span class="opt-text">Inpatient Dispensary</span></label>
+            <label class="opt"><input type="radio" name="A5" value="Other"><span class="opt-text">Other</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A6. Formal training in inventory/supply chain management in the past 3 years? <span class="req">*</span></div>
+          <div class="options" data-q="A6" data-type="radio">
+            <label class="opt"><input type="radio" name="A6" value="Yes"><span class="opt-text">Yes</span></label>
+            <label class="opt"><input type="radio" name="A6" value="No"><span class="opt-text">No</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">A6a. If Yes &mdash; briefly describe the training:
+            <span class="q-sub">Leave blank if you answered No to A6.</span>
+          </div>
+          <input class="text-input" data-q="A6a" placeholder="e.g. GHS in-service workshop, short course...">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION B ── -->
+  <div class="section" id="sec-b">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Section B &mdash; GSP and FEFO/FIFO knowledge and compliance</h2>
+        <p>Your responses contribute to a composite knowledge and practice score used in the analysis.</p>
+      </div>
+      <div class="section-body">
+        <div class="instr">Scale: &nbsp; 1 = Strongly Disagree &nbsp;|&nbsp; 2 = Disagree &nbsp;|&nbsp; 3 = Neutral &nbsp;|&nbsp; 4 = Agree &nbsp;|&nbsp; 5 = Strongly Agree</div>
+
+        <div class="likert-wrap" id="b-likert">
+          <div class="likert-header">
+            <div></div>
+            <div class="lh-label">Strongly disagree</div>
+            <div class="lh-label">Disagree</div>
+            <div class="lh-label">Neutral</div>
+            <div class="lh-label">Agree</div>
+            <div class="lh-label">Strongly agree</div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">B10. In the past three months, has your unit experienced at least one medicine stockout? <span class="req">*</span></div>
+          <div class="options" data-q="B10" data-type="radio">
+            <label class="opt"><input type="radio" name="B10" value="Yes"><span class="opt-text">Yes</span></label>
+            <label class="opt"><input type="radio" name="B10" value="No"><span class="opt-text">No</span></label>
+            <label class="opt"><input type="radio" name="B10" value="Not sure"><span class="opt-text">I am not sure</span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">B10a. If Yes &mdash; approximately how many different medicines were affected?
+            <span class="q-sub">Leave blank if No or Not sure.</span>
+          </div>
+          <input class="text-input" data-q="B10a" placeholder="Enter a number">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION C ── -->
+  <div class="section" id="sec-c">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Section C &mdash; knowledge and use of inventory control tools</h2>
+      </div>
+      <div class="section-body">
+        <div class="instr">C1&ndash;C3: Select the option describing your familiarity. Scoring weights are shown in brackets and contribute to your composite knowledge score.<br>C5&ndash;C6: Use the 1&ndash;5 scale (1 = Strongly Disagree, 5 = Strongly Agree).</div>
+
+        <div class="q-block">
+          <div class="q-label">C1. ABC analysis &mdash; classifying medicines by annual consumption value into Class A (high), B (medium), C (low): <span class="req">*</span></div>
+          <div class="options" data-q="C1" data-type="radio">
+            <label class="opt"><input type="radio" name="C1" value="2"><span class="opt-text">I can explain it and apply it in practice <strong>(2 pts)</strong></span></label>
+            <label class="opt"><input type="radio" name="C1" value="1"><span class="opt-text">I have heard of it but cannot apply it <strong>(1 pt)</strong></span></label>
+            <label class="opt"><input type="radio" name="C1" value="0"><span class="opt-text">I am not familiar with it <strong>(0 pts)</strong></span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">C2. VEN analysis &mdash; classifying medicines as Vital, Essential, or Non-essential: <span class="req">*</span></div>
+          <div class="options" data-q="C2" data-type="radio">
+            <label class="opt"><input type="radio" name="C2" value="2"><span class="opt-text">I can explain it and apply it in practice <strong>(2 pts)</strong></span></label>
+            <label class="opt"><input type="radio" name="C2" value="1"><span class="opt-text">I have heard of it but cannot apply it <strong>(1 pt)</strong></span></label>
+            <label class="opt"><input type="radio" name="C2" value="0"><span class="opt-text">I am not familiar with it <strong>(0 pts)</strong></span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">C3. The ABC-VEN matrix &mdash; combining both classifications for procurement prioritisation: <span class="req">*</span></div>
+          <div class="options" data-q="C3" data-type="radio">
+            <label class="opt"><input type="radio" name="C3" value="2"><span class="opt-text">I can explain it and apply it in practice <strong>(2 pts)</strong></span></label>
+            <label class="opt"><input type="radio" name="C3" value="1"><span class="opt-text">I have heard of it but cannot apply it <strong>(1 pt)</strong></span></label>
+            <label class="opt"><input type="radio" name="C3" value="0"><span class="opt-text">I am not familiar with it <strong>(0 pts)</strong></span></label>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">C4. How often is ABC-VEN analysis formally conducted and used for procurement planning at CCTH? <span class="req">*</span></div>
+          <div class="options" data-q="C4" data-type="radio">
+            <label class="opt"><input type="radio" name="C4" value="Regularly"><span class="opt-text">Regularly (at least annually)</span></label>
+            <label class="opt"><input type="radio" name="C4" value="Occasionally"><span class="opt-text">Occasionally</span></label>
+            <label class="opt"><input type="radio" name="C4" value="Rarely"><span class="opt-text">Rarely</span></label>
+            <label class="opt"><input type="radio" name="C4" value="Never"><span class="opt-text">Never</span></label>
+            <label class="opt"><input type="radio" name="C4" value="Don't know"><span class="opt-text">I don&rsquo;t know</span></label>
+          </div>
+        </div>
+
+        <div class="likert-wrap" id="c-likert">
+          <div class="likert-header">
+            <div></div>
+            <div class="lh-label">Strongly disagree</div>
+            <div class="lh-label">Disagree</div>
+            <div class="lh-label">Neutral</div>
+            <div class="lh-label">Agree</div>
+            <div class="lh-label">Strongly agree</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION D ── -->
+  <div class="section" id="sec-d">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Section D &mdash; standard stock management practices</h2>
+      </div>
+      <div class="section-body">
+        <div class="instr">For D1 and D6, select the appropriate option(s). For all other items, use the 1&ndash;5 scale.</div>
+
+        <div class="q-block">
+          <div class="q-label">D1. How frequently are physical stock counts conducted in your unit? <span class="req">*</span></div>
+          <div class="options" data-q="D1" data-type="radio">
+            <label class="opt"><input type="radio" name="D1" value="Daily"><span class="opt-text">Daily</span></label>
+            <label class="opt"><input type="radio" name="D1" value="Weekly"><span class="opt-text">Weekly</span></label>
+            <label class="opt"><input type="radio" name="D1" value="Monthly"><span class="opt-text">Monthly</span></label>
+            <label class="opt"><input type="radio" name="D1" value="Quarterly"><span class="opt-text">Quarterly</span></label>
+            <label class="opt"><input type="radio" name="D1" value="Rarely/Never"><span class="opt-text">Rarely or Never</span></label>
+          </div>
+        </div>
+
+        <div class="likert-wrap" id="d-likert-1">
+          <div class="likert-header">
+            <div></div>
+            <div class="lh-label">Strongly disagree</div>
+            <div class="lh-label">Disagree</div>
+            <div class="lh-label">Neutral</div>
+            <div class="lh-label">Agree</div>
+            <div class="lh-label">Strongly agree</div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">D6. If you use GhiLMIS, which functions do you use it for? <span class="q-sub">Tick all that apply. Leave blank if you do not use GhiLMIS.</span></div>
+          <div class="options" data-q="D6" data-type="checkbox">
+            <label class="opt"><input type="checkbox" name="D6" value="Stock tracking"><span class="opt-text">Stock tracking / balance checking</span></label>
+            <label class="opt"><input type="checkbox" name="D6" value="Requisitions"><span class="opt-text">Submitting requisitions</span></label>
+            <label class="opt"><input type="checkbox" name="D6" value="Reports"><span class="opt-text">Generating reports</span></label>
+            <label class="opt"><input type="checkbox" name="D6" value="Recording"><span class="opt-text">Recording issues and receipts</span></label>
+            <label class="opt"><input type="checkbox" name="D6" value="Don't use"><span class="opt-text">I do not use GhiLMIS</span></label>
+          </div>
+        </div>
+
+        <div class="likert-wrap" id="d-likert-2">
+          <div class="likert-header">
+            <div></div>
+            <div class="lh-label">Strongly disagree</div>
+            <div class="lh-label">Disagree</div>
+            <div class="lh-label">Neutral</div>
+            <div class="lh-label">Agree</div>
+            <div class="lh-label">Strongly agree</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION E ── -->
+  <div class="section" id="sec-e">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Section E &mdash; perceived barriers and moderating factors</h2>
+        <p>Rate your level of agreement with each statement about factors affecting medicine availability at CCTH.</p>
+      </div>
+      <div class="section-body">
+        <div class="instr">Scale: &nbsp; 1 = Strongly Disagree &nbsp;|&nbsp; 2 = Disagree &nbsp;|&nbsp; 3 = Neutral &nbsp;|&nbsp; 4 = Agree &nbsp;|&nbsp; 5 = Strongly Agree</div>
+
+        <div class="likert-wrap" id="e-likert">
+          <div class="likert-header">
+            <div></div>
+            <div class="lh-label">Strongly disagree</div>
+            <div class="lh-label">Disagree</div>
+            <div class="lh-label">Neutral</div>
+            <div class="lh-label">Agree</div>
+            <div class="lh-label">Strongly agree</div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">E7. In your opinion, what is the single most significant barrier to effective pharmaceutical inventory management at CCTH?</div>
+          <textarea data-q="E7" placeholder="Please describe briefly..."></textarea>
+        </div>
+
+        <div class="q-block">
+          <div class="q-label">E8. What specific improvements would you recommend to reduce stockouts and expiries at CCTH?</div>
+          <textarea data-q="E8" placeholder="Your recommendations..."></textarea>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPLETION ── -->
+  <div class="completion" id="completion">
+    <div class="check-circle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M5 12l5 5L19 7" stroke="#0D7A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Questionnaire complete</h2>
+    <p>Thank you for your participation. Your responses have been recorded. Please return the paper copy to the researcher if you were also given a printed version.</p>
+    <div class="score-grid" id="score-grid"></div>
+    <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <!-- ── NAV ── -->
+  <div class="nav-bar" id="nav-bar">
+    <span class="nav-info" id="nav-info">Section <strong>1</strong> of 5</span>
+    <div class="btn-row">
+      <button class="btn" id="btn-back" onclick="navBack()" style="display:none">&#8592; Back</button>
+      <button class="btn btn-primary" id="btn-next" onclick="navNext()">Next &#8594;</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const responses = {};
+let cur = 0;
+const secs = ['sec-a','sec-b','sec-c','sec-d','sec-e'];
+const secNames = [
+  'Section 1 of 5 \u2014 Demographic information',
+  'Section 2 of 5 \u2014 GSP and FEFO/FIFO',
+  'Section 3 of 5 \u2014 Inventory control tools',
+  'Section 4 of 5 \u2014 Stock management practices',
+  'Section 5 of 5 \u2014 Perceived barriers'
+];
+
+const bItems = [
+  {q:'B1', t:'B1. I can correctly explain the FEFO principle and how it differs from FIFO.'},
+  {q:'B2', t:'B2. I consistently apply FEFO when dispensing and arranging medicines on shelves.'},
+  {q:'B3', t:'B3. Storage temperatures in my unit are monitored and recorded at least once daily.'},
+  {q:'B4', t:'B4. Medicines are stored in clean, secure areas with adequate ventilation and protection from sunlight.'},
+  {q:'B5', t:'B5. Near-expiry and expired medicines are identified, segregated, and recorded promptly.'},
+  {q:'B6', t:'B6. All shelves in my unit are clearly labelled and medicines are arranged systematically.'},
+  {q:'B7', t:'B7. I am familiar with the WHO Good Storage Practice (GSP) guidelines applicable to our pharmacy.'},
+  {q:'B8', t:'B8. Cold-chain medicines are consistently stored within the manufacturer-recommended temperature range.'},
+  {q:'B9', t:'B9. I am aware of the Ghana FDA regulations governing medicine storage in public health facilities.'},
+];
+const cItems = [
+  {q:'C5', t:'C5. I actively refer to inventory classification data when making day-to-day stock management decisions.'},
+  {q:'C6', t:'C6. I believe ABC-VEN analysis results are actually used in procurement planning decisions at this facility.'},
+];
+const dItems1 = [
+  {q:'D2', t:'D2. Bin cards are maintained and updated for all medicines in my unit after every transaction.'},
+  {q:'D3', t:'D3. I know the reorder point (ROP) for the key medicines I am responsible for managing.'},
+  {q:'D4', t:'D4. Stock requisitions are submitted on a regular scheduled basis \u2014 not only when a stockout has occurred.'},
+  {q:'D5', t:'D5. I use GhiLMIS (Ghana Integrated Logistics Management Information System) in my regular work.'},
+];
+const dItems2 = [
+  {q:'D7', t:'D7. When stock reaches the reorder point, I initiate a requisition promptly without waiting for a stockout.'},
+  {q:'D8', t:'D8. Stockout incidents in my unit are formally recorded and reported to my supervisor or store manager.'},
+  {q:'D9', t:'D9. Documentation in my unit (bin cards, stock registers, GRNs) is consistently kept up to date.'},
+];
+const eItems = [
+  {q:'E1', t:'E1. Delays in NHIS reimbursements to CCTH negatively affect the hospital\u2019s ability to maintain adequate medicine stock.'},
+  {q:'E2', t:'E2. Public procurement regulations (e.g., mandatory tender processes) slow down the hospital\u2019s ability to procure medicines quickly when needed.'},
+  {q:'E3', t:'E3. Inadequate pharmacy staffing levels make it difficult to implement proper inventory management procedures consistently.'},
+  {q:'E4', t:'E4. Irregular or unreliable supply from the Central Medical Stores (CMS) is a significant cause of stockouts at CCTH.'},
+  {q:'E5', t:'E5. Inadequate storage infrastructure (space, shelving, cold chain equipment) limits effective stock management at CCTH.'},
+  {q:'E6', t:'E6. Lack of formal training in inventory management tools and procedures affects stock management quality in my unit.'},
+];
+
+function buildLikert(items, containerId) {
+  const wrap = document.getElementById(containerId);
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'likert-row';
+    row.innerHTML = '<span class="lr-text">' + item.t + ' <span style="color:#991B1B">*</span></span>' +
+      [1,2,3,4,5].map(n => '<div class="likert-btn" data-q="' + item.q + '" data-val="' + n + '">' + n + '</div>').join('');
+    wrap.appendChild(row);
+    row.querySelectorAll('.likert-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        row.querySelectorAll('.likert-btn').forEach(b => { b.className = 'likert-btn'; });
+        btn.classList.add('sel-' + btn.dataset.val);
+        responses[item.q] = btn.dataset.val;
+      });
+    });
+  });
+}
+
+buildLikert(bItems, 'b-likert');
+buildLikert(cItems, 'c-likert');
+buildLikert(dItems1, 'd-likert-1');
+buildLikert(dItems2, 'd-likert-2');
+buildLikert(eItems, 'e-likert');
+
+document.querySelectorAll('.options[data-type="radio"]').forEach(grp => {
+  grp.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const inp = opt.querySelector('input');
+      grp.querySelectorAll('.opt').forEach(o => o.classList.remove('selected-radio'));
+      opt.classList.add('selected-radio');
+      inp.checked = true;
+      responses[grp.dataset.q] = inp.value;
+    });
+  });
+});
+
+document.querySelectorAll('.options[data-type="checkbox"]').forEach(grp => {
+  grp.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const inp = opt.querySelector('input');
+      inp.checked = !inp.checked;
+      opt.classList.toggle('selected-check', inp.checked);
+      responses[grp.dataset.q] = Array.from(grp.querySelectorAll('input:checked')).map(i => i.value);
+    });
+  });
+});
+
+document.querySelectorAll('textarea, .text-input').forEach(el => {
+  el.addEventListener('input', () => { if(el.dataset.q) responses[el.dataset.q] = el.value; });
+});
+
+function updateUI() {
+  const pct = Math.round(((cur + 1) / (secs.length + 1)) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '%';
+  document.getElementById('section-label').textContent = secNames[cur] || '';
+  document.getElementById('nav-info').innerHTML = 'Section <strong>' + (cur+1) + '</strong> of ' + secs.length;
+  document.getElementById('btn-back').style.display = cur > 0 ? 'inline-block' : 'none';
+  document.getElementById('btn-next').textContent = cur === secs.length - 1 ? 'Submit' : 'Next \u2192';
+}
+
+function navNext() {
+  if(cur < secs.length - 1) {
+    document.getElementById(secs[cur]).classList.remove('active');
+    cur++;
+    document.getElementById(secs[cur]).classList.add('active');
+    updateUI();
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else {
+    showCompletion();
+  }
+}
+
+function navBack() {
+  if(cur > 0) {
+    document.getElementById(secs[cur]).classList.remove('active');
+    cur--;
+    document.getElementById(secs[cur]).classList.add('active');
+    updateUI();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
+function showCompletion() {
+  secs.forEach(s => document.getElementById(s).classList.remove('active'));
+  document.getElementById('nav-bar').style.display = 'none';
+  document.getElementById('prog').style.width = '100%';
+  document.getElementById('pct-label').textContent = '100%';
+  document.getElementById('section-label').textContent = 'Complete';
+  document.getElementById('completion').classList.add('active');
+
+  const bKeys = ['B1','B2','B3','B4','B5','B6','B7','B8','B9'];
+  const dKeys = ['D2','D3','D4','D5','D7','D8','D9'];
+  const eKeys = ['E1','E2','E3','E4','E5','E6'];
+  const cKeys = ['C1','C2','C3'];
+
+  const avg = keys => {
+    const vals = keys.map(k => parseFloat(responses[k])).filter(v => !isNaN(v));
+    return vals.length ? (vals.reduce((a,b) => a+b, 0) / vals.length).toFixed(2) : 'N/A';
+  };
+  const sum = keys => {
+    const vals = keys.map(k => parseFloat(responses[k])).filter(v => !isNaN(v));
+    return vals.length === keys.length ? vals.reduce((a,b) => a+b, 0) : 'N/A';
+  };
+
+  const cards = [
+    { val: avg(bKeys) === 'N/A' ? 'N/A' : avg(bKeys) + '/5', lbl: 'Avg GSP/FEFO score (Section B)' },
+    { val: sum(cKeys) === 'N/A' ? 'N/A' : sum(cKeys) + '/6', lbl: 'ABC-VEN knowledge score (C1\u2013C3)' },
+    { val: avg(dKeys) === 'N/A' ? 'N/A' : avg(dKeys) + '/5', lbl: 'Avg practices score (Section D)' },
+    { val: avg(eKeys) === 'N/A' ? 'N/A' : avg(eKeys) + '/5', lbl: 'Avg barriers score (Section E)' },
+  ];
+  document.getElementById('score-grid').innerHTML = cards.map(c =>
+    '<div class="score-card"><div class="val">' + c.val + '</div><div class="lbl">' + c.lbl + '</div></div>'
+  ).join('');
+}
+
+updateUI();
+</script>
+</body>
+</html>
